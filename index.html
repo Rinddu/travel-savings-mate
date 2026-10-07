@@ -1,0 +1,319 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>여행 적금 메이트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{
+  --ground:#EEF3F6; --paper:#FFFFFF; --ink:#13253A; --muted:#5B6E80; --line:#D3DDE5;
+  --sea:#0E7C7B; --sea-soft:#DCEFEE; --stamp:#C8414F; --bar:#B9CBD6;
+  --display:"Black Han Sans","Apple SD Gothic Neo",sans-serif;
+  --body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#0C1621; --paper:#14212F; --ink:#E6EEF4; --muted:#93A6B6; --line:#2A3B4C;
+    --sea:#3FB8B5; --sea-soft:#15393C; --stamp:#EE6B77; --bar:#34495C;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#0C1621; --paper:#14212F; --ink:#E6EEF4; --muted:#93A6B6; --line:#2A3B4C;
+  --sea:#3FB8B5; --sea-soft:#15393C; --stamp:#EE6B77; --bar:#34495C;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.7;padding-inline:16px;padding-block:0}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;letter-spacing:.01em}
+p{margin:0}
+.label{font-family:var(--mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* 슬라이드 */
+.slide{display:grid;padding-block:40px}
+.slide:first-child{padding-top:56px}
+footer{text-align:center;color:var(--muted);font-size:14px;padding-block:24px 56px}
+.inner{width:100%;max-width:940px;margin-inline:auto;display:grid;gap:22px}
+.slide h2{font-size:clamp(28px,4.6vw,42px);line-height:1.25}
+.lead{color:var(--muted);font-size:clamp(17px,2vw,20px)}
+.big-list{margin:0;padding-left:1.2em;display:grid;gap:16px;font-size:clamp(18px,2.2vw,22px)}
+.big-list li::marker{color:var(--sea)}
+.big-list li span{display:block;color:var(--muted);font-size:.8em}
+
+/* 탑승권 */
+.pass{background:var(--paper);border:1px solid var(--line);border-radius:16px;display:grid;grid-template-columns:1fr auto;overflow:hidden}
+.pass-main{padding:36px 36px 30px;display:grid;gap:22px}
+.route{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.city{display:grid;gap:2px}
+.city b{font-family:var(--display);font-weight:400;font-size:clamp(30px,7vw,54px);line-height:1.1}
+.arrow{flex:1;min-width:60px;height:2px;background:repeating-linear-gradient(90deg,var(--sea) 0 8px,transparent 8px 14px);position:relative}
+.arrow::after{content:"✈";position:absolute;right:-4px;top:-14px;color:var(--sea);font-size:22px}
+.pass h1{font-size:clamp(24px,4vw,34px);color:var(--sea)}
+.meta{display:flex;gap:32px;flex-wrap:wrap}
+.meta div{display:grid}
+.meta strong{font-family:var(--mono);font-weight:500;font-size:16px}
+.stub{border-left:2px dashed var(--line);padding:36px 26px;display:grid;align-content:space-between;gap:16px;min-width:150px;position:relative}
+.stub::before,.stub::after{content:"";position:absolute;left:-11px;width:20px;height:20px;border-radius:50%;background:var(--ground)}
+.stub::before{top:-10px}.stub::after{bottom:-10px}
+.stamp{font-family:var(--display);color:var(--stamp);border:2px solid var(--stamp);border-radius:6px;padding:4px 10px;transform:rotate(-8deg);text-align:center;font-size:17px;line-height:1.3}
+.barcode{height:50px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 5px,transparent 5px 9px,var(--ink) 9px 12px,transparent 12px 14px)}
+.hint{color:var(--muted);font-size:14px;text-align:center}
+@media (max-width:600px){
+  .pass{grid-template-columns:1fr}
+  .pass-main{padding:26px 22px}
+  .stub{border-left:0;border-top:2px dashed var(--line);grid-template-columns:auto 1fr;align-items:center;padding:18px 22px}
+  .stub::before,.stub::after{display:none}
+}
+
+/* 문제 → 해결 */
+.versus{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.versus div{border-radius:12px;padding:18px 20px;display:grid;gap:6px;background:var(--paper);border:1px solid var(--line)}
+.versus div:last-child{border-color:var(--sea)}
+.versus b{font-family:var(--display);font-weight:400;font-size:22px}
+.versus div:last-child b{color:var(--sea)}
+.versus span{color:var(--muted);font-size:16px}
+@media (max-width:600px){.versus{grid-template-columns:1fr}}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;list-style:none;padding:0;margin:0}
+.tiles li{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:4px;align-content:start}
+.tiles li b{font-size:18px}
+.tiles li span{font-size:15px;color:var(--muted);line-height:1.6}
+
+/* 데모 */
+.demo{background:var(--sea-soft);border-radius:14px;padding:22px;display:grid;gap:18px}
+.step{display:grid;gap:10px}
+.step h3{font-size:20px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.field{display:grid;gap:4px;flex:1;min-width:150px}
+.field label{font-size:14px;color:var(--muted)}
+input,select{font:inherit;font-size:16px;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);width:100%}
+button{font:inherit;font-size:16px;font-weight:700;padding:10px 18px;border:0;border-radius:8px;background:var(--sea);color:var(--paper);cursor:pointer}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.card{background:var(--paper);border-radius:10px;padding:12px 16px;display:grid;gap:2px}
+.card b{font-size:17px}
+.card span{font-size:15px;color:var(--muted)}
+.chart{overflow-x:auto}
+.chart svg{display:block;width:100%;min-width:420px;height:auto}
+.est{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.num{font-family:var(--display);font-weight:400;font-size:32px;color:var(--sea);font-variant-numeric:tabular-nums}
+.track{position:relative;height:30px}
+.track .bar{position:absolute;left:0;right:0;top:14px;height:3px;background:var(--line);border-radius:2px}
+.track .fill{position:absolute;left:0;top:14px;height:3px;background:var(--sea);border-radius:2px;transition:width .5s}
+.track .plane{position:absolute;top:0;font-size:22px;color:var(--sea);transform:translateX(-50%);transition:left .5s}
+.track-labels{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-family:var(--mono)}
+.jobs{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.jobs .card strong{font-family:var(--mono);font-weight:500;font-size:17px;font-variant-numeric:tabular-nums}
+.note{font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.track .fill,.track .plane{transition:none}}
+
+/* 필수 기능 표 */
+.map{display:grid;gap:10px}
+.map div{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:16px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 20px;align-items:center}
+.map b{color:var(--sea)}
+@media (max-width:600px){.map div{grid-template-columns:1fr;gap:4px}}
+
+/* 배울 것 */
+.learn{display:grid;gap:18px;list-style:none;padding:0;margin:0;counter-reset:l}
+.learn li{display:grid;grid-template-columns:auto 1fr;gap:2px 16px;counter-increment:l;font-size:clamp(18px,2.2vw,22px)}
+.learn li::before{content:counter(l);grid-row:span 2;font-family:var(--display);font-size:22px;color:var(--sea);width:42px;height:42px;border:2px solid var(--sea);border-radius:50%;display:grid;place-items:center;line-height:1}
+.learn li b{font-weight:700}
+.learn li span{color:var(--muted);font-size:.78em}
+
+.end{text-align:center;justify-items:center}
+.end h2{font-size:clamp(34px,6vw,60px)}
+.end .stamp{font-size:22px;padding:8px 18px}
+
+</style>
+
+<main>
+
+  <section class="slide" id="s1" data-name="표지">
+    <div class="inner">
+      <header class="pass">
+        <div class="pass-main">
+          <span class="label">Boarding pass · 프로젝트 소개</span>
+          <div class="route">
+            <div class="city"><span class="label">From</span><b>할부 여행</b></div>
+            <div class="arrow" aria-hidden="true"></div>
+            <div class="city"><span class="label">To</span><b>빚 없는 여행</b></div>
+          </div>
+          <h1>여행 적금 메이트: 가고 싶은 여행의 가격을 알려주고, 모으는 방법까지 찾아줘요</h1>
+          <div class="meta">
+            <div><span class="label">Flight</span><strong>CC-2026</strong></div>
+            <div><span class="label">Pilot</span><strong>Claude Code</strong></div>
+            <div><span class="label">Gate</span><strong>여행 적금 메이트</strong></div>
+          </div>
+        </div>
+        <div class="stub">
+          <div class="stamp">첫 비행<br>출발 확정</div>
+          <div class="barcode" aria-hidden="true"></div>
+        </div>
+      </header>
+      <p class="hint">아래에서 직접 써볼 수 있어요 ↓</p>
+    </div>
+  </section>
+
+
+  <section class="slide" id="s3" data-name="프로젝트">
+    <div class="inner">
+      <span class="label">About</span>
+      <h2>어떤 서비스인가요?</h2>
+      <p class="lead">가고 싶은 패키지 여행을 정하면 예상 가격을 알려주고, 그 돈을 모을 방법까지 함께 찾아주는 웹서비스예요.</p>
+      <div class="versus">
+        <div><span class="label">지금은</span><b>일단 가고, 할부로 갚기</b><span>여행 가격도 모르고, 얼마를 언제까지 모아야 할지도 막막해요.</span></div>
+        <div><span class="label">여행 적금 메이트</span><b>미리 모아서, 빚 없이 떠나기</b><span>가격 예측, 적금 추천, 알바 추천까지 한 곳에서 계획해요.</span></div>
+      </div>
+      <ul class="tiles">
+        <li><b>링크로 상품 불러오기</b><span>여행사 상품 주소를 붙여넣으면 상품명, 일정, 가격을 자동으로 읽어와요.</span></li>
+        <li><b>예상 가격 알려주기</b><span>원하는 달 상품이 아직 없으면, 같은 상품의 지난 가격 추이로 예상 가격을 보여줘요.</span></li>
+        <li><b>실제 은행 적금 추천</b><span>기간에 맞는 적금을 찾고 매달 얼마씩 넣으면 되는지 계산해요.</span></li>
+        <li><b>모은 금액 직접 기록</b><span>돈은 보관하지 않아요. 사용자가 기록하고, 진행률만큼 비행기가 날아가요.</span></li>
+        <li><b>알바 추천</b><span>부족한 금액을 채우려면 어떤 알바를 주 몇 시간 하면 되는지 알려줘요.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="slide" id="s4" data-name="시연 ① 가격">
+    <div class="inner">
+      <span class="label">Demo 1 / 2</span>
+      <h2>링크를 붙여넣으면, 예상 가격이 나와요</h2>
+      <div class="demo">
+        <div class="step">
+          <h3>① 여행 상품 링크 붙여넣기</h3>
+          <form class="row" id="linkForm">
+            <div class="field" style="flex:3">
+              <label for="link">상품 페이지 주소 (danang, osaka, bali 중 하나를 넣어보세요)</label>
+              <input id="link" type="text" value="https://tour.example.com/package/osaka-3n4d">
+            </div>
+            <button type="submit">불러오기</button>
+          </form>
+          <div class="card" id="product"></div>
+        </div>
+        <div class="step">
+          <h3>② 가고 싶은 달의 예상 가격</h3>
+          <div class="row">
+            <div class="field" style="max-width:220px">
+              <label for="month">가고 싶은 달</label>
+              <select id="month"></select>
+            </div>
+          </div>
+          <div class="chart" id="chart"></div>
+          <div class="est"><span>예상 가격 약</span><span class="num" id="estPrice">0원</span><span class="note" id="estNote"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="s5" data-name="시연 ② 모으기">
+    <div class="inner">
+      <span class="label">Demo 2 / 2</span>
+      <h2>얼마씩, 어떻게 모을지 알려줘요</h2>
+      <div class="demo">
+        <div class="step">
+          <h3>③ 모은 돈 기록하고 적금 추천받기</h3>
+          <div class="row">
+            <div class="field" style="max-width:260px">
+              <label for="saved">지금까지 모은 돈 (원)</label>
+              <input id="saved" type="number" min="0" step="10000" value="300000">
+            </div>
+          </div>
+          <div>
+            <div class="track" aria-hidden="true"><div class="bar"></div><div class="fill" id="fill"></div><div class="plane" id="plane">✈</div></div>
+            <div class="track-labels"><span>출발 준비</span><span id="pct">0%</span><span id="dest">여행지 도착</span></div>
+          </div>
+          <div class="card">
+            <span id="bankName"></span>
+            <p>매달 <span class="num" id="monthly">0원</span>씩 넣으면 출발 전에 모을 수 있어요.</p>
+          </div>
+        </div>
+        <div class="step">
+          <h3>④ 부족한 돈을 채울 알바</h3>
+          <p id="gapText"></p>
+          <div class="jobs" id="jobs"></div>
+          <p class="note">상품, 가격, 적금 이름은 예시예요. 시급은 2026년 최저시급 10,320원 기준이에요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+</main>
+<footer>여행 적금 메이트 · Claude Code로 만든 프로젝트 소개 페이지</footer>
+
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+
+  /* 시연 */
+  var products={
+    danang:{name:'다낭 3박 5일 자유+관광 패키지',city:'다낭',info:'바나힐 · 호이안 · 미케비치 · 항공+호텔 포함',prices:[79,82,76,72,74,86,99,105,78,75,77,92]},
+    osaka:{name:'오사카·교토 3박 4일 패키지',city:'오사카',info:'유니버설 스튜디오 · 교토 · 도톤보리 · 항공+호텔 포함',prices:[115,112,129,138,121,118,135,142,116,120,124,139]},
+    bali:{name:'발리 4박 6일 풀빌라 패키지',city:'발리',info:'우붓 · 꾸따 · 스노클링 · 항공+풀빌라 포함',prices:[152,149,146,158,162,171,189,194,160,155,158,176]}
+  };
+  var WAGE=10320, RISE=1.04;
+  var jobs=[
+    {name:'쿠팡 물류센터',desc:'주말 단기 · 야간수당 포함 예시',rate:WAGE*1.3},
+    {name:'편의점',desc:'주말 오전 · 최저시급',rate:WAGE},
+    {name:'카페',desc:'평일 저녁 · 최저시급',rate:WAGE},
+    {name:'과외',desc:'주 1~2회 · 시급 예시',rate:25000}
+  ];
+  var won=function(n){return Math.round(n).toLocaleString('ko-KR')+'원'};
+  var key='osaka', curM=new Date().getMonth();
+  var sel=$('month');
+  for(var i=1;i<=12;i++){var m=(curM+i)%12,o=document.createElement('option');o.value=m;o.textContent=(m+1)+'월';if(i===5)o.selected=true;sel.appendChild(o);}
+  function monthsAhead(){var d=(+sel.value-curM+12)%12;return d===0?12:d;}
+
+  function drawChart(p,sm){
+    var W=640,H=190,padL=44,padB=26,padT=24,max=Math.ceil(Math.max.apply(null,p)*RISE/50)*50;
+    var bw=(W-padL-8)/12,y=function(v){return padT+(H-padT-padB)*(1-v/max);};
+    var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="지난 1년 월별 상품 가격">';
+    [0,max/2,max].forEach(function(t){
+      s+='<line x1="'+padL+'" x2="'+(W-8)+'" y1="'+y(t)+'" y2="'+y(t)+'" stroke="var(--line)"/>';
+      s+='<text x="'+(padL-6)+'" y="'+(y(t)+4)+'" text-anchor="end" font-size="11" fill="var(--muted)">'+t+'만</text>';
+    });
+    p.forEach(function(v,i){
+      var x=padL+i*bw+bw*.18,w=bw*.64,on=i===sm;
+      s+='<rect x="'+x+'" y="'+y(v)+'" width="'+w+'" height="'+(y(0)-y(v))+'" rx="3" fill="'+(on?'var(--sea)':'var(--bar)')+'"/>';
+      s+='<text x="'+(x+w/2)+'" y="'+(H-8)+'" text-anchor="middle" font-size="11" fill="'+(on?'var(--ink)':'var(--muted)')+'">'+(i+1)+'월</text>';
+      if(on){var e=v*RISE;
+        s+='<rect x="'+x+'" y="'+y(e)+'" width="'+w+'" height="'+(y(v)-y(e))+'" rx="3" fill="none" stroke="var(--stamp)" stroke-dasharray="3 2"/>';
+        s+='<text x="'+(x+w/2)+'" y="'+(y(e)-6)+'" text-anchor="middle" font-size="11" fill="var(--stamp)">예상</text>';}
+    });
+    $('chart').innerHTML=s+'</svg>';
+  }
+
+  function update(){
+    var p=products[key],sm=+sel.value,last=p.prices[sm]*10000,est=Math.round(last*RISE/10000)*10000;
+    var avg=p.prices.reduce(function(a,b){return a+b},0)/12*10000;
+    $('product').innerHTML='<b>'+p.name+'</b><span>'+p.info+'</span><span>'+(sm+1)+'월 상품은 아직 판매 전이에요</span>';
+    drawChart(p.prices,sm);
+    $('estPrice').textContent=won(est);
+    $('estNote').textContent='작년 '+(sm+1)+'월 '+won(last)+' · 연평균 '+won(avg)+' 기준';
+    var saved=Math.max(0,+$('saved').value||0),n=monthsAhead(),gap=Math.max(0,est-saved);
+    var pc=Math.min(100,Math.round(saved/est*100));
+    $('pct').textContent=pc+'%';$('fill').style.width=pc+'%';$('dest').textContent=p.city+' 도착';
+    $('plane').style.left='calc(11px + (100% - 22px) * '+(pc/100)+')';
+    $('bankName').textContent='추천 적금 (예시): '+(n<=6?'○○은행 6개월 자유적금':'○○은행 12개월 정기적금')+' · '+(sm+1)+'월 출발까지 '+n+'개월 · 목표 '+won(est);
+    $('monthly').textContent=won(Math.ceil(gap/n/10000)*10000);
+    $('gapText').innerHTML=gap>0?'남은 금액 <b>'+won(gap)+'</b>을 '+n+'개월 동안 채우려면, 매주 이 정도 일하면 돼요.':'목표 금액을 이미 다 모았어요. 이제 떠나기만 하면 돼요!';
+    $('jobs').innerHTML=gap>0?jobs.map(function(j){
+      return '<div class="card"><b>'+j.name+'</b><span>'+j.desc+'</span><strong>주 '+Math.ceil(gap/j.rate/(n*4.345))+'시간</strong></div>';
+    }).join(''):'';
+  }
+  $('linkForm').addEventListener('submit',function(e){
+    e.preventDefault();var v=$('link').value.toLowerCase();
+    key=v.indexOf('danang')>-1?'danang':v.indexOf('bali')>-1?'bali':'osaka';update();
+  });
+  sel.addEventListener('change',update);
+  $('saved').addEventListener('input',update);
+  update();
+})();
+</script>
+
+</body></html>
